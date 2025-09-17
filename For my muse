@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Envelope Poem</title>
+<style>
+  :root{
+    --bg:#f4efe9;
+    --envelope:#e74c3c;
+    --paper:#fffdf8;
+    --shadow: rgba(0,0,0,0.15);
+    --accent:#c0392b;
+    --text:#222;
+    --card-w:320px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg,var(--bg), #fff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+    color:var(--text);
+  }
+
+  .stage{
+    width:var(--card-w);
+    perspective:1000px;
+  }
+
+  /* Envelope */
+  .envelope{
+    width:100%;
+    height:220px;
+    position:relative;
+    transform-style:preserve-3d;
+    cursor:pointer;
+    user-select:none;
+    transition:transform .25s ease;
+  }
+
+  .envelope:active{transform:scale(.995)}
+
+  /* Back body of envelope */
+  .body{
+    width:100%;
+    height:140px;
+    background: linear-gradient(180deg, var(--envelope), var(--accent));
+    border-radius:6px;
+    box-shadow: 0 12px 30px var(--shadow);
+    position:absolute;
+    bottom:0;
+    left:0;
+    overflow:hidden;
+  }
+
+  /* Paper (letter) */
+  .letter{
+    width:88%;
+    height:160px;
+    background:var(--paper);
+    position:absolute;
+    left:6%;
+    bottom:8px;
+    border-radius:4px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    transform:translateY(40%);
+    transition: transform .6s cubic-bezier(.2,.9,.3,1);
+    padding:18px 18px 22px 18px;
+    font-size:15px;
+    line-height:1.5;
+    overflow:auto;
+  }
+
+  /* Envelope flap */
+  .flap{
+    width:100%;
+    height:120px;
+    position:absolute;
+    top:0;
+    left:0;
+    transform-origin:50% 100%;
+    transform:rotateX(0deg);
+    transition: transform .6s cubic-bezier(.2,.9,.3,1);
+    z-index:5;
+    backface-visibility:hidden;
+  }
+
+  .flap::before{
+    content:"";
+    display:block;
+    width:100%;
+    height:100%;
+    background: linear-gradient(180deg, var(--envelope), var(--accent));
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    border-radius:6px 6px 0 0;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.12) inset;
+  }
+
+  /* Seal */
+  .seal{
+    position:absolute;
+    top:62px;
+    left:50%;
+    transform:translateX(-50%);
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-weight:700;
+    font-size:18px;
+    z-index:6;
+    pointer-events:none;
+    mix-blend-mode:overlay;
+  }
+
+  /* Open state */
+  .envelope.open .flap{
+    transform: rotateX(-180deg);
+    transition: transform .6s cubic-bezier(.18,.9,.32,1);
+  }
+  .envelope.open .letter{
+    transform:translateY(-48%);
+  }
+
+  /* Small caption & instructions */
+  .caption{
+    margin-top:18px;
+    text-align:center;
+    font-size:13px;
+    color:#555;
+  }
+
+  /* Accessibility focus styles */
+  .envelope:focus{
+    outline:3px dashed rgba(0,0,0,0.08);
+    outline-offset:8px;
+  }
+
+  /* Responsive */
+  @media (max-width:420px){
+    :root{--card-w:320px}
+    .letter{font-size:14px}
+  }
+
+  /* Poem styling */
+  .poem-title{
+    font-weight:700;
+    margin-bottom:6px;
+    letter-spacing:0.2px;
+  }
+  .poem-lines{
+    white-space:pre-wrap;
+    margin:0;
+  }
+
+  /* subtle paper edge */
+  .letter::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:10px;
+    background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
+    pointer-events:none;
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div id="envelope" class="envelope" role="button" tabindex="0" aria-pressed="false" aria-label="Open letter">
+      <div class="flap" aria-hidden="true">
+        <div class="seal">✉</div>
+      </div>
+
+      <div class="body" aria-hidden="true"></div>
+
+      <article class="letter" id="letter" aria-hidden="true">
+        <h3 class="poem-title" id="poemTitle">A Poem for my Muse</h3>
+        <p class="poem-lines" id="poemText"> With you, the days feel light and true, <br> Every path I walk leads back to you. <br> It’s steady, it’s lasting, it’s written above <br>
+This is not limerence, this is pure love. <br>
+<br>
+I may admire Fidel from the film I’ve seen, <br> Who found his muse, his Stella, his dream. <br> But unlike Fidel who feared the fight, <br> I’ll hold your hand and make it right. <br>
+<br>
+He watched from afar, too scared to dive, <br> But I’ll risk it all to keep us alive. <br> No silence, no distance, no fear above <br> I’ll gamble it all, because this is love. <br>
+<br>
+You’re not just a muse that I adore, <br> You’re the reason my heart beats more. <br> Not fleeting words, not just a song, <br> But a promise to stay my whole life long. <br>
+<br>
+So here I stand, with courage true, <br> Not just in films, but in all I do.<br> For unlike Fidel who let fate slip by, <br> I’ll choose you always—until we die.</p>
+      </article>
+    </div>
+
+    <div class="caption">Click or press <kbd>Enter</kbd> to open the envelope.</div>
+  </div>
+
+<script>
+(function(){
+  const env = document.getElementById('envelope');
+  const letter = document.getElementById('letter');
+  const poemText = document.getElementById('poemText');
+  const poemTitle = document.getElementById('poemTitle');
+
+  function toggleOpen(forceOpen){
+    const willOpen = typeof forceOpen === 'boolean' ? forceOpen : !env.classList.contains('open');
+    env.classList.toggle('open', willOpen);
+    env.setAttribute('aria-pressed', willOpen ? 'true' : 'false');
+    letter.setAttribute('aria-hidden', willOpen ? 'false' : 'true');
+  }
+
+  env.addEventListener('click', () => toggleOpen());
+  env.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      toggleOpen();
+    }
+    if (e.key === 'Escape'){
+      toggleOpen(false);
+    }
+  });
+
+  // close when clicking outside the envelope
+  document.addEventListener('click', (e)=>{
+    if (!env.contains(e.target) && env.classList.contains('open')){
+      toggleOpen(false);
+    }
+  });
+
+  // Load a saved poem from localStorage (optional)
+  const saved = localStorage.getItem('myPoem_v1');
+  if (saved){
+    try{
+      const data = JSON.parse(saved);
+      if (data.title) poemTitle.textContent = data.title;
+      if (data.text) poemText.innerHTML = data.text.replace(/\n/g,'<br>');
+    }catch(err){ /* ignore parse errors */ }
+  }
+
+  // Small debug/api for customization via console:
+  window.envelopePoem = {
+    set(title, text){
+      if (title) poemTitle.textContent = title;
+      if (text) poemText.innerHTML = text.replace(/\n/g,'<br>');
+      localStorage.setItem('myPoem_v1', JSON.stringify({title:title, text:text}));
+    },
+    open(){ toggleOpen(true); },
+    close(){ toggleOpen(false); }
+  };
+})();
+</script>
+</body>
+</html>
